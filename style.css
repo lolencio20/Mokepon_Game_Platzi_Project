@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+	/*font-family: 'Righteous', cursive;*/
+
+* {
+	box-sizing: border-box;
+}
+
+
+body{
+	font-family: "Righteous", cursive;
+	background-color:#041562 ;
+}
+h1{
+	font-family: font-family: 'Righteous', cursive;
+	color: white;
+}
+
+
+.subtitulo{
+	color: white;
+	font-size: 20px;
+}
+
+
+
+#seleccionar-mascota{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.tarjeta-de-mokepon{
+	display: flex;
+	color: white;
+	justify-content: center;
+
+	text-align: center;
+	padding:10px;
+	width: 180px;
+	height: 125px;
+	background: #114685;
+	border-radius: 20px;
+
+}
+.tarjeta-de-mokepon img{
+	width: 80px;
+}
+
+
+
+
+
+.tarjetas input{
+	display: none;
+}
+.tarjetas {
+	display: flex;
+	gap: 10px;
+}
+#boton-seleccionar{
+	border-radius: 20px;
+    background: #114685;
+    color: white;
+    width: 125px;
+    height: 75px;
+    font-size: 20px;
+    border: white solid 1px;
+    margin-top: 30px;
+}
+#seleccionar-ataque{
+	color: white;
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#seleccionar-ataque h2 {
+	color: white;
+    font-size: 32px;
+
+}
+.botones-ataque{
+	width: 50vw;
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+}
+#boton-agua, #boton-fuego, #boton-tierra, #boton-reiniciar {
+	width: 120px;
+    height: 40px;
+    border-radius: 10px;
+    background: #114685;
+    color: white;
+    border: white solid 1px;
+    font-size: 20px;
+}
+
+
+
+#mensaje{
+	display: flex;
+    flex-direction: column;
+    color: white;
+    text-align: center;
+}
+#boton-reiniciar{
+	margin-left: 10%;
+}

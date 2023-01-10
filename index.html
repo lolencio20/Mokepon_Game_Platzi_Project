@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>
+		MOKEPON!
+	</title>
+	
+
+
+</head>
+<body>
+	
+	<section id="seleccionar-mascota">
+		<h1>Mokepon</h1>
+		<h2 class="subtitulo">Elije tu mascota</h2>
+
+		<div class="tarjetas">
+			<input type="radio" name="mascota" id="Hipodoge">
+		<label for="Hipodoge" class="tarjeta-de-mokepon">
+			<p>Hipodoge</p>
+			<img src="mokepones/mokepons_mokepon_hipodoge_attack.png">
+			</label>
+
+		<input type="radio" name="mascota" id="Capipego">
+		<label for="Capipego" class="tarjeta-de-mokepon">
+			<p>Capipego</p>
+			<img src="mokepones/mokepons_mokepon_capipepo_attack.png">
+			</label>
+
+		<input type="radio" name="mascota" id="Ratigueya">
+		<label for="Ratigueya" class="tarjeta-de-mokepon">
+			<p>Ratigueya</p>
+			<img src="mokepones/mokepons_mokepon_ratigueya_attack.png">
+			</label>
+
+		<input type="radio" name="mascota" id="Langostelvis">
+		<label for="Langostelvis" class="tarjeta-de-mokepon">
+			<p>Langostelvis</p>
+			<img src="mokepones/mokepons_mokepon_capipepo_attack.png">
+			</label>
+
+		<input type="radio" name="mascota" id="Tucapalma">
+		<label for="Tucapalma" class="tarjeta-de-mokepon">
+			<p>Tucapalma</p>
+			<img src="mokepones/mokepons_mokepon_capipepo_attack.png">
+			</label>
+		</div>
+		
+
+
+
+
+
+
+
+
+
+
+		<button id="boton-seleccionar">Seleccionar</button>		
+	</section>
+
+	<section id="seleccionar-ataque">
+
+		<h2>Elije el ataque</h2>
+		<div class="botones-ataque">
+			<button id="boton-agua">agua</button>
+			<button id="boton-fuego">fuego</button>
+			<button id="boton-tierra">tierra</button>
+
+		</div>
+
+		<p>Tu mascota <span id="mascotaJugador"></span> tiene <span id="vidasJugador">3</span> vidas</p>
+		<p>la mascotas del enemigo <span id="mascotaEnemigo"></span> tiene <span id="vidasEnemigo">3</span> vidas</p>
+
+
+
+	</section>
+	<section id="mensaje">
+		
+		<div class="ataques-jugador"></div>
+		<div class="notificacion"></div>
+		<div class="ataques-pc"></div>
+
+	</section>
+	<section id="reiniciar">
+		<p><button id="boton-reiniciar">reiniciar</button></p>
+	</section>
+
+	<script src="./js/mokepon.js"></script>
+</body>
+</html>
