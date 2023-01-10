@@ -18,7 +18,7 @@ displayAtaques.style.display= "none"
 displayReset.style.display="none"
 displayNotificacion.style.display="none"
 
-
+	let notificacion= document.querySelector(".notificacion");
 
 
 // ------------------------   SELECCION DE MASCOTAS           -----------------
@@ -34,24 +34,24 @@ function mostrarCombate() {
 
 
 function seleccionarMascotaJugador() {
-	if(document.getElementById("Hipodoge").checked){alert("seleccionaste a Hipodoge")
+	if(document.getElementById("Hipodoge").checked){
 		document.getElementById("mascotaJugador").innerHTML= "Hipodoge"
 
 		mostrarCombate()
 }
-	else if(document.getElementById("Capipego").checked){alert("seleccionaste a Capipego")
+	else if(document.getElementById("Capipego").checked){
 		document.getElementById("mascotaJugador").innerHTML= "Capipego"
 		mostrarCombate()
 }
-	else if(document.getElementById("Ratigueya").checked){alert("seleccionaste a Ratigueya")
+	else if(document.getElementById("Ratigueya").checked){
 		document.getElementById("mascotaJugador").innerHTML= "Ratigueya"
 		mostrarCombate()
 }
-	else if(document.getElementById("Langostelvis").checked){alert("seleccionaste a Langostelvis")
+	else if(document.getElementById("Langostelvis").checked){
 		document.getElementById("mascotaJugador").innerHTML= "Langostelvis"
 		mostrarCombate()
 }
-	else if(document.getElementById("Tucapalma").checked){alert("seleccionaste a Tucapalma")
+	else if(document.getElementById("Tucapalma").checked){
 		document.getElementById("mascotaJugador").innerHTML= "Tucapalma"
 		mostrarCombate()
 }
@@ -59,7 +59,6 @@ function seleccionarMascotaJugador() {
 
 
 	let mascotaEnemigo = seleccionarMascotaEnemigo()	
-	alert("el enemigo ha elejido " + mascotaEnemigo)
 }
 
 function seleccionarMascotaEnemigo(){
@@ -114,11 +113,7 @@ let desabiltarAtaques=()=>{
 
 function revisarVidas(){
 	if (document.getElementById("vidasJugador").innerHTML==0){
-		
-		let mensajeFinal=document.createElement("p")
-
-		mensajeFinal.innerHTML="Que mal, has perdido"
-		document.getElementById("ataques").appendChild(mensajeFinal)
+		notificacion.innerHTML="Que mal, has perdido"
 		desabiltarAtaques()
 		 }
 
@@ -126,12 +121,7 @@ function revisarVidas(){
 	else if(document.getElementById("vidasEnemigo").innerHTML==0){
 
 
-		let mensajeFinal=document.createElement("p")
-
-		mensajeFinal.innerHTML="Felicidades, Has ganado"
-
-		document.getElementById("ataques").appendChild(mensajeFinal)
-
+		notificacion.innerHTML="Felicidades, Has ganado"
 		desabiltarAtaques()
 
 
@@ -180,8 +170,6 @@ let ataqueEnemigo=()=>{
 let crearMensaje=()=>{
 
 
-	let parrafo = document.createElement("p")
-	let notificacion= document.querySelector(".notificacion");
 	let ataquesJugador=document.querySelector(".ataques-jugador")
 	let ataquesPc=document.querySelector(".ataques-pc")
 
@@ -196,9 +184,6 @@ let crearMensaje=()=>{
 	ataquesJugador.appendChild(notJugador)
 	ataquesPc.appendChild(notPc)
 
-	parrafo.innerHTML="Tu mascota ha atacado con "+ ataqueJugador + " y la mascota del enemigo ataca con "+ataquePC
-
-
 
 
 //la funcion de crear notificacion va a recibir un parametro tipo string como "GANAS", "PIERDES" o "EMPATE"
@@ -207,15 +192,11 @@ let crearMensaje=()=>{
 
 		if (e=="GANAS") {
 		document.getElementById("vidasEnemigo").innerHTML-= 1
-		let noti=document.createElement("p")
-		noti.innerHTML= e
-		notificacion.appendChild(noti)
+		notificacion.innerHTML=e
 		}
 		else if(e=="PIERDES"){
 			document.getElementById("vidasJugador").innerHTML-=1
-			let noti=document.createElement("p")
-			noti.innerHTML=e
-			notificacion.appendChild(noti)
+			notificacion.innerHTML=e
 		}
 		else {
 			notificacion.innerHTML=e
@@ -230,33 +211,26 @@ let crearMensaje=()=>{
 	//-----------------------
 	if(ataquePC == ataqueJugador){
 		crearNotificacion("EMPATE")
-		parrafo.innerHTML+= " - Empate"
 	}
 	else if((ataqueJugador== "AGUA") && (ataquePC== "FUEGO")){
 		
 		crearNotificacion("GANAS")
-		parrafo.innerHTML+= " GANAS"
 
 	}
 
 	else if((ataqueJugador== "TIERRA") && (ataquePC== "AGUA")){
 		crearNotificacion("GANAS")
-		parrafo.innerHTML+= " GANAS"
 
 	}
 	else if((ataqueJugador== "FUEGO") && (ataquePC== "TIERRA")){
 		crearNotificacion("GANAS")
-		parrafo.innerHTML+= " GANAS"
 
 	}
 	else{
 		crearNotificacion("PIERDES")
-		parrafo.innerHTML+= " PIERDES"
 
 
 	}
-
-	document.getElementById("ataques").appendChild(parrafo)
 }
 
 

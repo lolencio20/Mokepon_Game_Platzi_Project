@@ -65,6 +65,7 @@
 	<section id="seleccionar-ataque">
 
 		<h2>Elije el ataque</h2>
+
 		<div class="botones-ataque">
 			<button id="boton-agua">agua</button>
 			<button id="boton-fuego">fuego</button>
@@ -72,29 +73,31 @@
 
 		</div>
 
-<!-- 		<p>Tu mascota <span id="mascotaJugador"></span> tiene <span id="vidasJugador">3</span> vidas</p>
-		<p>la mascotas del enemigo <span id="mascotaEnemigo"></span> tiene <span id="vidasEnemigo">3</span> vidas</p> -->
+		<h2 class="notificacion"></h2>
 
+		<div id="ataques">
+			<div class="jugador">
+				<p id="mascotaJugador"></p>
+				<p id="vidasJugador">3</p>
+				<div class="ataques-jugador"></div>
+				
 
-
-	</section>
-	<section id="ataques">
-		<div>
-			<p id="mascotaJugador"></p>
-			<p id="vidasJugador">3</p>
-			<div class="ataques-jugador"></div>
+			</div>
 			
-
-		</div>
-		<div class="notificacion"></div>
-		<div>
-			<p id="mascotaEnemigo"></p>
-			<p id="vidasEnemigo">3</p>
-			<div class="ataques-pc"></div>
-		</div>
+			<div class="pc">
+				<p id="mascotaEnemigo"></p>
+				<p id="vidasEnemigo">3</p>
+				<div class="ataques-pc"></div>
+			</div>
 		
 
+	</div>
+
+
+
+
 	</section>
+
 	<section id="reiniciar">
 		<p><button id="boton-reiniciar">reiniciar</button></p>
 	</section>

@@ -30,6 +30,19 @@ h1{
 	align-items: center;
 }
 
+
+
+.tarjetas input:checked + label{
+	background: #5d8bf4;
+}
+
+
+
+
+
+
+
+
 .tarjeta-de-mokepon{
 	display: flex;
 	color: white;
@@ -98,11 +111,57 @@ h1{
 
 
 #ataques{
-	display: flex;
-    flex-direction: column;
-    color: white;
-    text-align: center;
+	display: grid;
+	grid-template-columns: 130px 130px;
 }
+
+
+#ataques .pc, #ataques .jugador{
+	display: flex;
+	flex-direction:column;
+	align-items: center;
+	text-align: center;
+    background: #ffffff;
+    padding: 5px;
+    color: black;
+    border-radius: 20px;
+}
+#vidasEnemigo, #vidasJugador{
+	font-size: 50px;
+	margin:0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 #boton-reiniciar{
 	margin-left: 10%;
 }
+
+
+
+
+@media (max-width: 360px){
+	.tarjetas{
+		flex-direction: column;
+	}
+}
+
+
+
+
+
+
+
+
+
+
