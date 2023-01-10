@@ -1,11 +1,22 @@
 //seccion elejir mascota jugador
 
+//errores actuales: no sabe cuando las vidas llegan a "0" 
+
+
+
+
+
+
+
+
  let displayMascotas=document.getElementById("seleccionar-mascota")
  ,displayAtaques=document.getElementById("seleccionar-ataque"),
- displayReset=document.getElementById('reiniciar');
+ displayReset=document.getElementById('reiniciar'),
+ displayNotificacion=document.querySelector('.notificacion');
 
 displayAtaques.style.display= "none"
 displayReset.style.display="none"
+displayNotificacion.style.display="none"
 
 
 
@@ -15,9 +26,10 @@ displayReset.style.display="none"
 
 // Esta funcion nos permite mostrar la zona del combate y ocultar la zona de seleccionar personaje
 function mostrarCombate() {
+	displayMascotas.style.display = "none"
 	displayAtaques.style.display= "flex"
 	displayReset.style.display="block"
-	displayMascotas.style.display = "none"
+	displayNotificacion.style.display="block"
 }
 
 
@@ -75,7 +87,7 @@ function seleccionarMascotaEnemigo(){
 	return mascotaEnemigo
 }
 function aleatorioEntre(min,max){
-	return Math.floor(Math.random()*(max-min)+1)
+	return Math.floor(Math.random()*max +min)
 }
 
 
@@ -92,34 +104,35 @@ let ataqueJugador, ataquePC;
 let vidasEnemigo=3
 let vidasJugador=3
 
+
+
+let desabiltarAtaques=()=>{
+	document.getElementById("boton-agua"). disabled= true
+	document.getElementById("boton-fuego"). disabled= true
+	document.getElementById("boton-tierra"). disabled= true
+}
+
 function revisarVidas(){
-	if (vidasJugador==0){
+	if (document.getElementById("vidasJugador").innerHTML==0){
 		
 		let mensajeFinal=document.createElement("p")
 
 		mensajeFinal.innerHTML="Que mal, has perdido"
-		document.getElementById("mensaje").appendChild(mensajeFinal)
-
-		document.getElementById("boton-agua"). disabled= true
-		document.getElementById("boton-fuego"). disabled= true
-		document.getElementById("boton-tierra"). disabled= true
-
-
+		document.getElementById("ataques").appendChild(mensajeFinal)
+		desabiltarAtaques()
 		 }
 
 
-	else if(vidasEnemigo==0){
+	else if(document.getElementById("vidasEnemigo").innerHTML==0){
 
 
 		let mensajeFinal=document.createElement("p")
 
 		mensajeFinal.innerHTML="Felicidades, Has ganado"
 
-		document.getElementById("mensaje").appendChild(mensajeFinal)
+		document.getElementById("ataques").appendChild(mensajeFinal)
 
-		document.getElementById("boton-agua"). disabled= true
-		document.getElementById("boton-fuego"). disabled= true
-		document.getElementById("boton-tierra"). disabled= true
+		desabiltarAtaques()
 
 
 		 }
@@ -155,7 +168,10 @@ let ataqueEnemigo=()=>{
 		ataquePC="AGUA"
 	}
 	else if(ataquePC==2){ataquePC="FUEGO"}
-	else{ataquePC=tierra}
+
+	else {
+		ataquePC="TIERRA"
+	}
 	crearMensaje()
 	revisarVidas()
 
@@ -183,14 +199,31 @@ let crearMensaje=()=>{
 	parrafo.innerHTML="Tu mascota ha atacado con "+ ataqueJugador + " y la mascota del enemigo ataca con "+ataquePC
 
 
+
+
+//la funcion de crear notificacion va a recibir un parametro tipo string como "GANAS", "PIERDES" o "EMPATE"
+//lo que hay que hacer es que haga diferentes procedimientos para cada uno de los parametros que reciba
 	let crearNotificacion= (e)=>{
 
-
-		vidasEnemigo-=1
-		document.getElementById("vidasEnemigo").innerHTML= vidasEnemigo
+		if (e=="GANAS") {
+		document.getElementById("vidasEnemigo").innerHTML-= 1
 		let noti=document.createElement("p")
 		noti.innerHTML= e
 		notificacion.appendChild(noti)
+		}
+		else if(e=="PIERDES"){
+			document.getElementById("vidasJugador").innerHTML-=1
+			let noti=document.createElement("p")
+			noti.innerHTML=e
+			notificacion.appendChild(noti)
+		}
+		else {
+			notificacion.innerHTML=e
+		}
+
+
+
+	
 
 	}
 
@@ -202,33 +235,38 @@ let crearMensaje=()=>{
 	else if((ataqueJugador== "AGUA") && (ataquePC== "FUEGO")){
 		
 		crearNotificacion("GANAS")
-		parrafo.innerHTML+= "GANAS"
+		parrafo.innerHTML+= " GANAS"
 
 	}
 
-
-
-
 	else if((ataqueJugador== "TIERRA") && (ataquePC== "AGUA")){
 		crearNotificacion("GANAS")
-		parrafo.innerHTML+= "GANAS"
+		parrafo.innerHTML+= " GANAS"
 
 	}
 	else if((ataqueJugador== "FUEGO") && (ataquePC== "TIERRA")){
 		crearNotificacion("GANAS")
-		parrafo.innerHTML+= "GANAS"
+		parrafo.innerHTML+= " GANAS"
 
 	}
 	else{
 		crearNotificacion("PIERDES")
-		parrafo.innerHTML+= "PIERDES"
+		parrafo.innerHTML+= " PIERDES"
 
 
 	}
-		//-----------------------
 
-	document.getElementById("mensaje").appendChild(parrafo)
+	document.getElementById("ataques").appendChild(parrafo)
 }
+
+
+
+
+
+
+
+
+
 
 let botonReinicio=document.getElementById("boton-reiniciar")
 	botonReinicio.addEventListener("click",()=>reset())
