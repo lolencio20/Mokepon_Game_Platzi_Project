@@ -14,14 +14,19 @@ let displayMascotas=document.getElementById("seleccionar-mascota")
  displayReset=document.getElementById('reiniciar'),
  displayNotificacion=document.querySelector('.notificacion');
 //extraerAtaques----
- let ataqueAgua
-	let ataqueFuego
-	let ataqueTierra
- let boton
- let botonesAtaque=document.getElementById("botones-ataque")
+let ataqueAgua
+let ataqueFuego
+let ataqueTierra
+let boton
+let botonesAtaque=document.getElementById("botones-ataque")
+let botones=[]
+let ataquesMokeponEnemigo
+let ataqueAleatorio
 //combate:
 let ataques 
-let ataqueJugador, ataquePC;
+let ataqueJugador=[], ataquePC=[];
+let victoriasJugador=0
+let victoriasPC=0
 
 let notificacion= document.querySelector(".notificacion")
 //funcion crear mensaje
@@ -29,6 +34,8 @@ let ataquesJugador=document.querySelector(".ataques-jugador")
 let ataquesPc=document.querySelector(".ataques-pc")
 let notJugador=document.createElement("p")
 let notPc=document.createElement("p")
+let Mjugador=0
+let MPC=0
 //boton reinicio
 let botonReinicio=document.getElementById("boton-reiniciar")
 
@@ -130,36 +137,45 @@ let extraerataques=()=>{
 	mokepones.forEach((mokepon)=>{
 		if (mokepon.nombre == mascotaJugador){
 			ataques=mokepon.ataques
-			console.log(ataques)
 		}
 		
 	})
 	ataques.forEach((e)=>{
-	boton=`<button id=${e.id}>${e.nombre}</button>`
-	console.log(boton)
+	boton=`<button id=${e.id} class="BAtaque">${e.nombre}</button>`
 	
 	botonesAtaque.innerHTML+=boton
 
 	})
-
+	
 	ataqueAgua=document.getElementById("boton-agua")
 	ataqueFuego=document.getElementById("boton-fuego")
 	ataqueTierra=document.getElementById("boton-tierra")
+	botones=document.querySelectorAll(".BAtaque")
 	
-	ataqueAgua.addEventListener("click",()=>{
-		ataqueJugador="AGUA"
+
+}
+function secuenciaDeAtaques(){
+	botones.forEach((boton)=>{
+		boton.addEventListener("click",(e)=>{
+			if (e.target.textContent=="tierra") {
+				ataqueJugador.push("tierra")
+				console.log(ataqueJugador)
+				boton.style.background ="#112f58"
+			}
+			else if (e.target.textContent=="agua") {
+				ataqueJugador.push("agua")
+				console.log(ataqueJugador)
+				boton.style.background ="#112f58"
+			}
+			else if (e.target.textContent=="fuego") {
+				ataqueJugador.push("fuego")
+				boton.style.background ="#112f58"
+				
+			}
 		ataqueEnemigo()
+			
+		})
 	})
-	ataqueFuego.addEventListener("click",()=>{
-		ataqueJugador="FUEGO"
-		ataqueEnemigo()})
-	ataqueTierra.addEventListener("click",()=>{
-		ataqueJugador="TIERRA"
-		ataqueEnemigo()
-	})
-
-
-
 }
 
 
@@ -171,6 +187,11 @@ function seleccionarMascotaEnemigo(){
 	let mascotaEnemigo=aleatorioEntre(0,mokepones.length -1)
 	spanMascotaEnemigo.innerHTML= mokepones[mascotaEnemigo].nombre
 
+	ataquesMokeponEnemigo= mokepones[mascotaEnemigo].ataques
+
+
+	secuenciaDeAtaques()
+
 
 
 	}
@@ -178,56 +199,77 @@ function aleatorioEntre(min,max){
 	return Math.floor(Math.random()*max +min)}
 // ------------------------   COMBATE           -----------------
 let desabiltarAtaques=()=>{
-	document.getElementById("boton-agua"). disabled= true
-	document.getElementById("boton-fuego"). disabled= true
-	document.getElementById("boton-tierra"). disabled= true}
-function revisarVidas(){
-	if (document.getElementById("vidasJugador").innerHTML==0){
-		notificacion.innerHTML="Que mal, has perdido"
-		desabiltarAtaques()
-		 }
+	botones.forEach((e)=>{
+		e.disabled=true
+	})
 
 
-	else if(document.getElementById("vidasEnemigo").innerHTML==0){
+}
 
-
-		notificacion.innerHTML="Felicidades, Has ganado"
-		desabiltarAtaques()
-
-
-		 }}
 
 let ataqueEnemigo=()=>{
 
-	ataquePC=aleatorioEntre(1,3)
-	if (ataquePC== 1) {
-		ataquePC="AGUA"
-	}
-	else if(ataquePC==2){ataquePC="FUEGO"}
-
-	else {
-		ataquePC="TIERRA"
-	}
+	ataqueAleatorio=aleatorioEntre(0,ataquesMokeponEnemigo.length -1)
+	if (ataqueAleatorio== 1 || ataquePC ==2) {ataquePC.push("agua")}
+	else if(ataqueAleatorio==3 || ataquePC ==4){ataquePC.push("fuego")}
+	else {ataquePC.push("tierra")}
 	crearMensaje()
-	revisarVidas()}
+	resultadoDeCombate()
+	console.log(ataquePC)
+
+
+}
+let resultadoDeCombate=()=>{
+	if(Mjugador==5){
+		if(document.getElementById("victoriasJugador").innerHTML>document.getElementById("victoriasEnemigo").innerHTML){
+		notificacion.innerHTML="HAS GANADO, FELICIDADES!!"
+		desabiltarAtaques()
+
+	}
+	else if(document.getElementById("victoriasJugador").innerHTML==document.getElementById("victoriasEnemigo").innerHTML){
+		notificacion.innerHTML="HAS GANADO, FELICIDADES!!"
+		desabiltarAtaques()
+
+	}
+	else{
+		notificacion.innerHTML="HAS PERDIDO, QUE MAL..."
+		desabiltarAtaques()
+	}
+
+
+	}
+	
+}
+
+
+
+
 let crearNotificacion= (e)=>{
 	if (e=="GANAS") {
-	document.getElementById("vidasEnemigo").innerHTML-= 1
+		
+		victoriasJugador+=1
+		document.getElementById("victoriasJugador").innerHTML=victoriasJugador
+	
 	notificacion.innerHTML=e}
 	else if(e=="PIERDES"){
-		document.getElementById("vidasJugador").innerHTML-=1
+
+		victoriasPC+=1
+		document.getElementById("victoriasEnemigo").innerHTML=victoriasPC
 		notificacion.innerHTML=e}
-	else {notificacion.innerHTML=e}}
+	else {
+		notificacion.innerHTML=e}}
 let crearMensaje=()=>{
 	notJugador=document.createElement("p")
 	notPc=document.createElement("p")
-	notJugador.innerHTML=ataqueJugador
-	notPc.innerHTML=ataquePC
+	notJugador.innerHTML=ataqueJugador[Mjugador]
+	notPc.innerHTML=ataquePC[MPC]
+	Mjugador+=1
+	MPC+=1
 	ataquesJugador.appendChild(notJugador)
 	ataquesPc.appendChild(notPc)
-	if(ataquePC == ataqueJugador){crearNotificacion("EMPATE")}
-	else if((ataqueJugador== "AGUA") && (ataquePC== "FUEGO")){crearNotificacion("GANAS")}
-	else if((ataqueJugador== "TIERRA") && (ataquePC== "AGUA")){crearNotificacion("GANAS")}
-	else if((ataqueJugador== "FUEGO") && (ataquePC== "TIERRA")){crearNotificacion("GANAS")}
+	if(ataquePC[Mjugador-1] == ataqueJugador[MPC-1]){crearNotificacion("EMPATE")}
+	else if((ataqueJugador[Mjugador-1]== "agua") && (ataquePC[MPC-1]== "fuego")){crearNotificacion("GANAS")}
+	else if((ataqueJugador[Mjugador-1]== "tierra") && (ataquePC[MPC-1]== "agua")){crearNotificacion("GANAS")}
+	else if((ataqueJugador[Mjugador-1]== "fuego") && (ataquePC[MPC-1]== "tierra")){crearNotificacion("GANAS")}
 	else{crearNotificacion("PIERDES")}}
 botonReinicio.addEventListener("click",()=>location.reload())
