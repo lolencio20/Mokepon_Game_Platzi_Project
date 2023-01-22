@@ -11,7 +11,6 @@ let mascotaJugador
 //display's
 let displayMascotas=document.getElementById("seleccionar-mascota")
  ,displayAtaques=document.getElementById("seleccionar-ataque"),
- displayReset=document.getElementById('reiniciar'),
  displayNotificacion=document.querySelector('.notificacion');
 //extraerAtaques----
 let ataqueAgua
@@ -38,12 +37,23 @@ let Mjugador=0
 let MPC=0
 //boton reinicio
 let botonReinicio=document.getElementById("boton-reiniciar")
+//mapa
+let seccionVerMapa=document.getElementById("ver-mapa")
+let mapa= document.getElementById("mapa")
+let lienzo=mapa.getContext("2d")
+let intervalo
+let botonArriba=document.getElementById("mover-arriba"),
+	botonAbajo=document.getElementById("mover-abajo"),
+	botonIzquierda=document.getElementById("mover-izquierda"),
+	botonDerecha=document.getElementById("mover-derecha");
+
+
 
 
 //--------------------------------declaracion de variables//
 displayAtaques.style.display= "none"
-displayReset.style.display="none"
 displayNotificacion.style.display="none"
+seccionVerMapa.style.display="none"
 //--------------------------------------
 class Mokepon{
 	constructor(nombre,imagen,vidas){
@@ -51,18 +61,21 @@ class Mokepon{
 		this.imagen=imagen
 		this.vidas=vidas
 		this.ataques=[]
-	}
-
-}
+		this.x=20
+		this.y=30
+		this.ancho=80
+		this.alto=80
+		this.mapaFoto= new Image()
+		this.mapaFoto.src=imagen
+		this.velocidadX=0
+		this.velocidadY=0
+	}}
 
 let mokepones=[]
 
 let Hipodoge= new Mokepon("Hipodoge", "mokepones/mokepons_mokepon_hipodoge_attack.png",5)
 let Capipepo= new Mokepon("Capipepo", "mokepones/mokepons_mokepon_capipepo_attack.png", 5)
 let Ratigueya=new Mokepon("Ratigueya","mokepones/mokepons_mokepon_ratigueya_attack.png", 5)
-
-
-
 Hipodoge.ataques.push(
 	{nombre:"agua", id:"boton-agua"},
 	{nombre:"agua", id:"boton-agua"},
@@ -84,46 +97,30 @@ Ratigueya.ataques.push(
 	{nombre:"agua", id:"boton-agua"},
 	{nombre:"tierra", id:"boton-tierra"},
 	)
-
 mokepones.push(Hipodoge,Capipepo,Ratigueya)
-
 mokepones.forEach((mokepon)=>{
 	opcionDeMokepones= `<input type="radio" name="mascota" id=${mokepon.nombre}>
 		<label for=${mokepon.nombre} class="tarjeta-de-mokepon">
 			<p>${mokepon.nombre}</p>
 			<img src=${mokepon.imagen}>`
-			contenedorTarjetas.innerHTML+=opcionDeMokepones
-
-
-
-})
-
-
+			contenedorTarjetas.innerHTML+=opcionDeMokepones})
 // ------------------------   SELECCION DE MASCOTAS           -----------------
-// Esta funcion nos permite mostrar la zona del combate y ocultar la zona de seleccionar personaje
-function mostrarCombate() {
-	displayMascotas.style.display = "none"
-	displayAtaques.style.display= "flex"
-	displayReset.style.display="block"
-	displayNotificacion.style.display="block"}
-
-
 function seleccionarMascotaJugador() {
 	if(document.getElementById("Hipodoge").checked){
 		document.getElementById("mascotaJugador").innerHTML= Hipodoge.nombre
 		mascotaJugador=document.getElementById("mascotaJugador").innerHTML
 
-		mostrarCombate()
+		iniciarJuego()
 	}
 	else if(document.getElementById("Capipepo").checked){
 		document.getElementById("mascotaJugador").innerHTML= Capipepo.nombre
 		mascotaJugador=document.getElementById("mascotaJugador").innerHTML
-		mostrarCombate()
+		iniciarJuego()
 	}
 	else if(document.getElementById("Ratigueya").checked){
 		document.getElementById("mascotaJugador").innerHTML= Ratigueya.nombre
 		mascotaJugador=document.getElementById("mascotaJugador").innerHTML
-		mostrarCombate()
+		iniciarJuego()
 	}
 
 	else{alert("Por favor selecciona a tu mascota"); return 0}
@@ -131,7 +128,7 @@ function seleccionarMascotaJugador() {
 	extraerataques(mascotaJugador)
 	seleccionarMascotaEnemigo()
 }
-
+botonMascotaJugador.addEventListener("click", seleccionarMascotaJugador)
 
 let extraerataques=()=>{
 	mokepones.forEach((mokepon)=>{
@@ -151,38 +148,18 @@ let extraerataques=()=>{
 	ataqueFuego=document.getElementById("boton-fuego")
 	ataqueTierra=document.getElementById("boton-tierra")
 	botones=document.querySelectorAll(".BAtaque")
-	
-
-}
+	}
 function secuenciaDeAtaques(){
 	botones.forEach((boton)=>{
 		boton.addEventListener("click",(e)=>{
-			if (e.target.textContent=="tierra") {
-				ataqueJugador.push("tierra")
-				console.log(ataqueJugador)
+				ataqueJugador.push(e.target.textContent)
 				boton.style.background ="#112f58"
-			}
-			else if (e.target.textContent=="agua") {
-				ataqueJugador.push("agua")
-				console.log(ataqueJugador)
-				boton.style.background ="#112f58"
-			}
-			else if (e.target.textContent=="fuego") {
-				ataqueJugador.push("fuego")
-				boton.style.background ="#112f58"
-				
-			}
+				boton.disabled=true
+			
 		ataqueEnemigo()
 			
 		})
-	})
-}
-
-
-
-
-botonMascotaJugador.addEventListener("click", seleccionarMascotaJugador)
-
+	})}
 function seleccionarMascotaEnemigo(){
 	let mascotaEnemigo=aleatorioEntre(0,mokepones.length -1)
 	spanMascotaEnemigo.innerHTML= mokepones[mascotaEnemigo].nombre
@@ -201,12 +178,7 @@ function aleatorioEntre(min,max){
 let desabiltarAtaques=()=>{
 	botones.forEach((e)=>{
 		e.disabled=true
-	})
-
-
-}
-
-
+	})}
 let ataqueEnemigo=()=>{
 
 	ataqueAleatorio=aleatorioEntre(0,ataquesMokeponEnemigo.length -1)
@@ -215,10 +187,7 @@ let ataqueEnemigo=()=>{
 	else {ataquePC.push("tierra")}
 	crearMensaje()
 	resultadoDeCombate()
-	console.log(ataquePC)
-
-
-}
+	console.log(ataquePC)}
 let resultadoDeCombate=()=>{
 	if(Mjugador==5){
 		if(document.getElementById("victoriasJugador").innerHTML>document.getElementById("victoriasEnemigo").innerHTML){
@@ -227,7 +196,7 @@ let resultadoDeCombate=()=>{
 
 	}
 	else if(document.getElementById("victoriasJugador").innerHTML==document.getElementById("victoriasEnemigo").innerHTML){
-		notificacion.innerHTML="HAS GANADO, FELICIDADES!!"
+		notificacion.innerHTML="HA SIDO UN EMPATE!!"
 		desabiltarAtaques()
 
 	}
@@ -238,12 +207,7 @@ let resultadoDeCombate=()=>{
 
 
 	}
-	
-}
-
-
-
-
+	}
 let crearNotificacion= (e)=>{
 	if (e=="GANAS") {
 		
@@ -273,3 +237,104 @@ let crearMensaje=()=>{
 	else if((ataqueJugador[Mjugador-1]== "fuego") && (ataquePC[MPC-1]== "tierra")){crearNotificacion("GANAS")}
 	else{crearNotificacion("PIERDES")}}
 botonReinicio.addEventListener("click",()=>location.reload())
+
+
+function moverCapipepo(e){
+		if (e=="derecha"){
+			Capipepo.velocidadX=5
+			// Capipepo.x+=5
+			// pintarPersonaje()
+
+		}
+		else if (e=="izquierda") {
+			Capipepo.velocidadX= -5
+			// Capipepo.x-=5
+			// pintarPersonaje()
+		}
+		else if (e=="arriba") {
+			Capipepo.velocidadY= -5
+			// Capipepo.y-=5
+			// pintarPersonaje()
+		}
+		else if (e=="abajo") {
+			Capipepo.velocidadY= +5
+			// Capipepo.y+=5
+			// pintarPersonaje()
+		}
+
+	}
+	let pintarPersonaje=()=>{
+		Capipepo.x+=Capipepo.velocidadX
+		Capipepo.y+=Capipepo.velocidadY
+		lienzo.clearRect(0,0,mapa.width,mapa.height)
+		lienzo.drawImage(
+			Capipepo.mapaFoto,
+			Capipepo.x,
+			Capipepo.y,
+			Capipepo.ancho,
+			Capipepo.alto
+			)
+	}
+
+let teclaPresionada=(e)=>{
+	if (e.key=="ArrowUp") {
+		moverCapipepo("arriba")
+	}
+	else if (e.key=="ArrowDown") {
+		moverCapipepo("abajo")
+	}
+	else if (e.key=="ArrowLeft") {
+		moverCapipepo("izquierda")
+	}
+	else if (e.key=="ArrowRight") {
+		moverCapipepo("derecha")
+	}
+
+}
+let soltarTecla=(e)=>{
+	if (e.key=="ArrowUp"|| e.key=="ArrowDown") {
+		Capipepo.velocidadY=0
+	}
+	else{
+		Capipepo.velocidadX=0
+	}
+
+}
+
+
+
+	
+
+
+function iniciarJuego() {
+	displayMascotas.style.display = "none"
+	// displayAtaques.style.display= "flex"
+	displayNotificacion.style.display="block"
+	seccionVerMapa.style.display="flex"
+
+	window.addEventListener("keydown", teclaPresionada)
+	window.addEventListener("keyup", soltarTecla)
+	intervalo=setInterval(pintarPersonaje,50)
+
+	// pintarPersonaje()
+
+	
+	//boton para mover el personaje:
+
+	botonDerecha.addEventListener("mousedown",()=>moverCapipepo("derecha"))
+	botonIzquierda.addEventListener("mousedown",()=>moverCapipepo("izquierda"))
+	botonArriba.addEventListener("mousedown",()=>moverCapipepo("arriba"))
+	botonAbajo.addEventListener("mousedown",()=>moverCapipepo("abajo"))
+
+
+
+
+	//dejar de mover
+	botonDerecha.addEventListener("mouseup",()=>Capipepo.velocidadX=0)
+	botonIzquierda.addEventListener("mouseup",()=>Capipepo.velocidadX=0)
+	botonArriba.addEventListener("mouseup",()=>Capipepo.velocidadY=0)
+	botonAbajo.addEventListener("mouseup",()=>Capipepo.velocidadY=0)
+
+
+
+}
