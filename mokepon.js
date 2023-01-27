@@ -403,6 +403,4 @@ function iniciarJuego() {
 	
 	mapaBackground.src="mokepones/mokemap.jpg"
 
-
-
 }
